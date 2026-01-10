@@ -1,0 +1,7 @@
+quart
+pyrogram
+tgcrypto
+motor
+dnspython
+aiohttp
+hypercorn
