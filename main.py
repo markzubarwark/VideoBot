@@ -6,20 +6,24 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from motor.motor_asyncio import AsyncIOMotorClient
 
 # ====================================================================
-# 1. SETTINGS (AAPKI DETAILS)
+# 1. SETTINGS (AAPKI CHAT SE LI GAYI DETAILS)
 # ====================================================================
 API_ID = 30646544
 API_HASH = "d2f5e1abde0d56694941f965aff8d987"
 BOT_TOKEN = "8357960011:AAHqtS6CPh7kCY_7BZYHxIOnZQEuGtqLTns"
 
+# Database Link (Jo aapne code me diya tha)
 MONGO_URL = "mongodb+srv://ramu9045690509_db_user:J1g4r069@jigar069.ud3vuw7.mongodb.net/?appName=Jigar069"
 
+# Channel Details
 CHANNEL_USERNAME = "Myfirstvideochannel"
 CHANNEL_LINK = "https://t.me/Myfirstvideochannel"
 ADMIN_ID = 7846018094 
 
-# ✅ Maine Link Yahan Update Kar Diya Hai
+# ✅ DOMAIN (Ye Render wala link hai, ise mat badalna)
 DOMAIN = "https://videobot-osm3.onrender.com"
+
+# Ad Link (Jo aapne bataya tha)
 AD_LINK = "https://otieu.com/4/10330643"
 
 # ====================================================================
@@ -40,7 +44,7 @@ async def add_user(user_id):
     except: pass
 
 # ====================================================================
-# 3. WEBSITE HTML (PLAYER)
+# 3. WEBSITE HTML (PLAYER + AD LOGIC)
 # ====================================================================
 HTML_PAGE = """
 <!DOCTYPE html>
@@ -77,7 +81,7 @@ HTML_PAGE = """
 """
 
 # ====================================================================
-# 4. BOT & APP SETUP
+# 4. BOT SETUP
 # ====================================================================
 app = Quart(__name__)
 
@@ -90,7 +94,7 @@ bot = Client(
 )
 
 # ====================================================================
-# 5. WEBSITE ROUTES
+# 5. ROUTES (WEBSITE)
 # ====================================================================
 @app.route('/')
 async def home():
@@ -102,7 +106,7 @@ async def watch(msg_id):
     return await render_template_string(HTML_PAGE, tg_link=link, ad_link=AD_LINK)
 
 # ====================================================================
-# 6. BOT COMMANDS (Start, Broadcast, Video Handler)
+# 6. BOT COMMANDS
 # ====================================================================
 
 async def not_subscribed(client, message):
@@ -146,7 +150,10 @@ async def handle_video(client, message):
         notify = await message.reply_text("🔄 **Processing...**")
         file_name = message.video.file_name if message.video else "Video"
         
+        # Channel me copy karna
         sent_msg = await message.copy(CHANNEL_USERNAME, caption=f"🎬 **{file_name}**")
+        
+        # Link Generate
         stream_link = f"{DOMAIN}/watch/{sent_msg.id}"
         
         await notify.delete()
@@ -163,7 +170,7 @@ async def handle_video(client, message):
         await message.reply_text(f"❌ Error: {e}")
 
 # ====================================================================
-# 7. IMPORTANT: SERVER STARTUP LOGIC (RENDER)
+# 7. STARTUP LOGIC
 # ====================================================================
 
 @app.before_serving
@@ -178,4 +185,4 @@ async def cleanup():
 
 if __name__ == '__main__':
     app.run()
-    
+        
