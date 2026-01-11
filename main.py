@@ -6,13 +6,13 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from motor.motor_asyncio import AsyncIOMotorClient
 
 # ====================================================================
-# 1. SETTINGS (AAPKI CHAT SE LI GAYI DETAILS)
+# 1. SETTINGS (AAPKI DETAILS)
 # ====================================================================
 API_ID = 30646544
 API_HASH = "d2f5e1abde0d56694941f965aff8d987"
 BOT_TOKEN = "8357960011:AAHqtS6CPh7kCY_7BZYHxIOnZQEuGtqLTns"
 
-# Database Link (Jo aapne code me diya tha)
+# Database Link
 MONGO_URL = "mongodb+srv://ramu9045690509_db_user:J1g4r069@jigar069.ud3vuw7.mongodb.net/?appName=Jigar069"
 
 # Channel Details
@@ -20,10 +20,8 @@ CHANNEL_USERNAME = "Myfirstvideochannel"
 CHANNEL_LINK = "https://t.me/Myfirstvideochannel"
 ADMIN_ID = 7846018094 
 
-# ✅ DOMAIN (Ye Render wala link hai, ise mat badalna)
+# ✅ DOMAIN (Aapka Render Link)
 DOMAIN = "https://videobot-osm3.onrender.com"
-
-# Ad Link (Jo aapne bataya tha)
 AD_LINK = "https://otieu.com/4/10330643"
 
 # ====================================================================
@@ -44,7 +42,7 @@ async def add_user(user_id):
     except: pass
 
 # ====================================================================
-# 3. WEBSITE HTML (PLAYER + AD LOGIC)
+# 3. WEBSITE HTML (PLAYER)
 # ====================================================================
 HTML_PAGE = """
 <!DOCTYPE html>
@@ -81,20 +79,21 @@ HTML_PAGE = """
 """
 
 # ====================================================================
-# 4. BOT SETUP
+# 4. BOT SETUP (FIXED MEMORY ISSUE)
 # ====================================================================
 app = Quart(__name__)
 
+# Yahan 'in_memory=True' lagaya hai taaki crash na ho
 bot = Client(
     "VideoBot", 
     api_id=API_ID, 
     api_hash=API_HASH, 
     bot_token=BOT_TOKEN,
-    ipv6=False 
+    in_memory=True
 )
 
 # ====================================================================
-# 5. ROUTES (WEBSITE)
+# 5. ROUTES
 # ====================================================================
 @app.route('/')
 async def home():
@@ -150,10 +149,7 @@ async def handle_video(client, message):
         notify = await message.reply_text("🔄 **Processing...**")
         file_name = message.video.file_name if message.video else "Video"
         
-        # Channel me copy karna
         sent_msg = await message.copy(CHANNEL_USERNAME, caption=f"🎬 **{file_name}**")
-        
-        # Link Generate
         stream_link = f"{DOMAIN}/watch/{sent_msg.id}"
         
         await notify.delete()
@@ -170,18 +166,25 @@ async def handle_video(client, message):
         await message.reply_text(f"❌ Error: {e}")
 
 # ====================================================================
-# 7. STARTUP LOGIC
+# 7. SERVER STARTUP (DEBUG MODE)
 # ====================================================================
 
 @app.before_serving
 async def startup():
     print("🚀 Bot Starting...")
-    await bot.start()
+    try:
+        await bot.start()
+        print("✅ Bot Started Successfully! (Check Telegram)")
+    except Exception as e:
+        # Ye line Error ko Print karegi taaki humein pata chale dikkat kya hai
+        print(f"❌❌ ERROR STARTING BOT: {e} ❌❌")
 
 @app.after_serving
 async def cleanup():
     print("😴 Bot Stopping...")
-    await bot.stop()
+    try:
+        await bot.stop()
+    except: pass
 
 if __name__ == '__main__':
     app.run()
