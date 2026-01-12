@@ -20,7 +20,7 @@ CHANNEL_USERNAME = "Myfirstvideochannel"
 CHANNEL_LINK = "https://t.me/Myfirstvideochannel"
 ADMIN_ID = 7846018094 
 
-# ✅ DOMAIN (Aapka Render Link)
+# ✅ DOMAIN (Aapka Naya Link - Updated)
 DOMAIN = "https://videobot-finel.onrender.com"
 AD_LINK = "https://otieu.com/4/10330643"
 
@@ -79,11 +79,11 @@ HTML_PAGE = """
 """
 
 # ====================================================================
-# 4. BOT SETUP (FIXED MEMORY ISSUE)
+# 4. BOT SETUP
 # ====================================================================
 app = Quart(__name__)
 
-# Yahan 'in_memory=True' lagaya hai taaki crash na ho
+# in_memory=True lagaya hai taaki permission error na aaye
 bot = Client(
     "VideoBot", 
     api_id=API_ID, 
@@ -93,11 +93,11 @@ bot = Client(
 )
 
 # ====================================================================
-# 5. ROUTES
+# 5. ROUTES (WEBSITE)
 # ====================================================================
 @app.route('/')
 async def home():
-    return "<h1>✅ Bot is Live on Render!</h1>"
+    return "<h1>✅ Bot is Live & Port Fixed!</h1>"
 
 @app.route('/watch/<int:msg_id>')
 async def watch(msg_id):
@@ -149,7 +149,10 @@ async def handle_video(client, message):
         notify = await message.reply_text("🔄 **Processing...**")
         file_name = message.video.file_name if message.video else "Video"
         
+        # Channel par copy
         sent_msg = await message.copy(CHANNEL_USERNAME, caption=f"🎬 **{file_name}**")
+        
+        # Sahi Link Generate hoga
         stream_link = f"{DOMAIN}/watch/{sent_msg.id}"
         
         await notify.delete()
@@ -166,18 +169,13 @@ async def handle_video(client, message):
         await message.reply_text(f"❌ Error: {e}")
 
 # ====================================================================
-# 7. SERVER STARTUP (DEBUG MODE)
+# 7. SERVER STARTUP (PORT FIX)
 # ====================================================================
 
 @app.before_serving
 async def startup():
     print("🚀 Bot Starting...")
-    try:
-        await bot.start()
-        print("✅ Bot Started Successfully! (Check Telegram)")
-    except Exception as e:
-        # Ye line Error ko Print karegi taaki humein pata chale dikkat kya hai
-        print(f"❌❌ ERROR STARTING BOT: {e} ❌❌")
+    await bot.start()
 
 @app.after_serving
 async def cleanup():
@@ -186,6 +184,8 @@ async def cleanup():
         await bot.stop()
     except: pass
 
+# ✅ YE HAI PORT FIX (ISKE BINA RENDER PAR NAHI CHALEGA)
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
         
