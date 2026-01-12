@@ -21,7 +21,7 @@ CHANNEL_LINK = "https://t.me/Myfirstvideochannel"
 ADMIN_ID = 7846018094 
 
 # ✅ DOMAIN (Aapka Render Link)
-DOMAIN = "https://videobot-2.onrender.com"
+DOMAIN = "https://videobot-finel.onrender.com"
 AD_LINK = "https://otieu.com/4/10330643"
 
 # ====================================================================
