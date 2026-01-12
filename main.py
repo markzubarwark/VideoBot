@@ -10,7 +10,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 # ====================================================================
 API_ID = 30646544
 API_HASH = "d2f5e1abde0d56694941f965aff8d987"
-BOT_TOKEN = "8357960011:AAHqtS6CPh7kCY_7BZYHxIOnZQEuGtqLTns"
+BOT_TOKEN = "8553730028:AAHErVpQe4gsE5wHHKwg4lhKYmdp2jsHhmU"
 
 # Database Link
 MONGO_URL = "mongodb+srv://ramu9045690509_db_user:J1g4r069@jigar069.ud3vuw7.mongodb.net/?appName=Jigar069"
